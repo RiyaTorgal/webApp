@@ -1,0 +1,18 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'styles/LoginPage.css' %}">
+<title>Login Page</title>
+<div class="container">
+    <form method="post" action="/login">
+        {% csrf_token %}
+        <h1 style="text-align: center;">Login page</h1>
+        <h3>Please enter your details</h3>
+        <p>Username:</p>
+        <input name="username" type="text" required>
+        <p>Email:</p>
+        <input name="email" type="email" required>
+        <p>Password:</p>
+        <input name="password" type="password" required>
+        <br>
+        <button class="btn">Submit</button>   
+    </form>
+</div>

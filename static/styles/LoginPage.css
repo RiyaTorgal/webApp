@@ -1,0 +1,46 @@
+body {
+    background-image: linear-gradient(to bottom, rgb(149, 213, 253), cornflowerblue);
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.container{
+    border: 3px solid white;
+    border-radius: 10px;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin: auto;
+    background-color: white;
+}
+
+p{
+    font-size: small;
+}
+
+input{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px;
+}
+
+.center {
+    text-align: center;
+}
+
+.btn {
+    width: 100%;
+    background-color: rgb(151, 215, 255);
+    color: black;
+    font-size: 16px;
+    padding: 16px 30px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 20px;
+}

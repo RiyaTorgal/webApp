@@ -1,0 +1,40 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'styles/HomePage.css' %}"> 
+<title>Home Page</title>
+<br>
+<h1 style="text-align: center;">Home Page</h1>
+    <div class="container">
+        <form method="post" action="home/">
+            <p>Full Name: </p>
+            <input type="text" value="fname">
+            <p>Age: </p>
+            <input type="number" value="age">
+            <p>Gender: </p>
+            <label>
+                <input type="radio" name="gender" value="male"> Male
+            </label>
+            <label>
+                <input type="radio" name="gender" value="female"> Female
+            </label>
+            <label>
+                <input type="radio" name="gender" value="other"> Other
+            </label>
+            <p>Home Continent:</p>
+            <select id="coutry" name="country">
+                <option>Europe</option>
+                <option>Asia</option>
+                <option>Africa</option>
+                <option>North America</option>
+                <option>South America</option>
+            </select>
+            <p>Phone Number: </p>
+            <input type="number">
+            <p>Address: </p>
+            <textarea value="address"></textarea>
+        </form>
+    </div>
+    <div class="btn-container">
+        <a href="info/">
+            <button class="btn">Submit</button>
+        </a>
+    </div>
