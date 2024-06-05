@@ -1,6 +1,6 @@
 body {
     background-image: linear-gradient(to bottom, rgb(149, 213, 253), cornflowerblue);
-    height: 130vh;
+    height: auto;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     max-width: 1100px;
     width: 90%;
@@ -51,8 +51,8 @@ select{
     background-color: #f1f1f1;
 }
 .btn {
-    background-color: white;
-    color: black;
+    background-color: rgb(76 111 232);
+    color: #f1f1f1;
     font-size: 16px;
     padding: 16px 30px;
     border: none;

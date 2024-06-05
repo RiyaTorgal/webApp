@@ -4,10 +4,12 @@
 <h1 style="text-align: center;">Info Page</h1>
 <div class="container">
     <h1>Submitted Information</h1>
-    <p>Full Name: {{ form_data.fullName }}</p>
-    <p>Age: {{ form_data.age }}</p>
-    <p>Gender: {{ form_data.gender }}</p>
-    <p>Home Continent: {{ form_data.country }}</p>
-    <p>Phone Number: {{ form_data.phNo }}</p>
-    <p>Address: {{ form_data.address }}</p>
+    {% for form in forms %}
+    <p>Full Name: {{ form.fullName }}</p>
+    <p>Age: {{ form.age }}</p>
+    <p>Gender: {{ form.gender }}</p>
+    <p>Home Continent: {{ form.country }}</p>
+    <p>Phone Number: {{ form.phNo }}</p>
+    <p>Address: {{ form.address }}</p>
+    {% endfor %}
 </div>
