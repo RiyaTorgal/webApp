@@ -4,11 +4,12 @@
 <br>
 <h1 style="text-align: center;">Home Page</h1>
     <div class="container">
-        <form method="post" action="home/">
+        <form method="post" action="">
+            {% csrf_token %}
             <p>Full Name: </p>
-            <input type="text" value="fname">
+            <input type="text" name="fullName">
             <p>Age: </p>
-            <input type="number" value="age">
+            <input type="number" name="age">
             <p>Gender: </p>
             <label>
                 <input type="radio" name="gender" value="male"> Male
@@ -28,13 +29,13 @@
                 <option>South America</option>
             </select>
             <p>Phone Number: </p>
-            <input type="number">
+            <input type="number" name="phNo">
             <p>Address: </p>
-            <textarea value="address"></textarea>
+            <textarea name="address"></textarea>
         </form>
     </div>
     <div class="btn-container">
         <a href="info/">
-            <button class="btn">Submit</button>
+            <button type="submit" class="btn">Submit</button>
         </a>
     </div>
