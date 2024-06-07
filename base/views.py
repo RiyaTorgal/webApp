@@ -1,16 +1,23 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from base.models import formdb
-from django.http import HttpResponse
-from django.core.mail import EmailMessage
-from django.views.decorators import gzip
 from django.http import StreamingHttpResponse
 import cv2
-import threading
+import yolov5
+from yolov5.utils.torch_utils import select_device
+from yolov5.utils.plots import Annotator, colors
 
 def LandingPage(request): 
 	return render(request, "LandingPage.html") 
+
+model = yolov5.load('yolov5s.pt')
+# model = torch.hub.load('ultralytics/yolov5', 'yolov5s')
+device = select_device('cpu') # 0 for gpu, '' for cpu
+
+# Get names and colors
+names = model.module.names if hasattr(model, 'module') else model.names
+hide_labels=False
+hide_conf = False
 
 def LoginPage(request):
 	if request.method == "POST":
@@ -39,36 +46,29 @@ def InfoPage(request):
 	forms = formdb.objects.all() 
 	return render(request, "InfoPage.html",{'forms':forms})
 
-@gzip.gzip_page
 def webcam(request):
-    try:
-        cam = VideoCamera()
-        return StreamingHttpResponse(gen(cam), content_type="multipart/x-mixed-replace;boundary=frame")
-    except:
-        pass
-    return render(request, 'WebCam.html')
+    return StreamingHttpResponse(stream(), content_type='multipart/x-mixed-replace; boundary=frame')
 
-#to capture video class
-class VideoCamera(object):
-    def __init__(self):
-        self.video = cv2.VideoCapture(0)
-        (self.grabbed, self.frame) = self.video.read()
-        threading.Thread(target=self.update, args=()).start()
-
-    def __del__(self):
-        self.video.release()
-
-    def get_frame(self):
-        image = self.frame
-        _, jpeg = cv2.imencode('.jpg', image)
-        return jpeg.tobytes()
-
-    def update(self):
-        while True:
-            (self.grabbed, self.frame) = self.video.read()
-
-def gen(camera):
+def stream():
+    cap = cv2.VideoCapture(0)
+    model.conf = 0.25
+    model.iou = 0.5
+    # model.classes = [0,64,39]
     while True:
-        frame = camera.get_frame()
-        yield (b'--frame\r\n'
-    	b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+        ret, frame = cap.read()
+        if not ret:
+            print("Error: failed to capture image")
+            break
+
+        results = model(frame, augment=True)
+        # proccess
+        annotator = Annotator(frame, line_width=2, pil=not ascii) 
+        det = results.pred[0]
+        if det is not None and len(det):  
+            for *xyxy, conf, cls in reversed(det):
+                c = int(cls)  # integer class
+                label = None if hide_labels else (names[c] if hide_conf else f'{names[c]} {conf:.2f}')
+                annotator.box_label(xyxy, label, color=colors(c, True)) 
+        im0 = annotator.result() 
+        image_bytes = cv2.imencode('.jpg', im0)[1].tobytes()
+        yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + image_bytes + b'\r\n')
